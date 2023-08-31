@@ -1,7 +1,7 @@
 # Import datasets, classifiers and performance metrics
 from sklearn import datasets, metrics, svm
 from sklearn.model_selection import train_test_split
-
+import matplotlib.pyplot as plt
 #Utilities
 
 def preprocess_data(data):
@@ -27,3 +27,21 @@ def read_digits():
         y = digits.target
         y = digits.target
         return X, y
+
+def split_train_dev_test(X, y, test_size, dev_size):
+	X_temp, X_test, y_temp, y_test = train_test_split(X, y, test_size=test_size, random_state=42)
+	relative_dev_size = dev_size / (1 - test_size)
+	X_train, X_dev, y_train, y_dev = train_test_split(X_temp, y_temp, test_size=relative_dev_size, random_state=42)
+	return X_train, X_dev, X_test, y_train, y_dev, y_test
+
+def predict_and_eval(model, X_test, y_test):
+	predicted = model.predict(X_test)
+	report = metrics.classification_report(y_test, predicted)
+	print(f"Classification report for classifier {model}:\n{report}\n")
+	disp = metrics.ConfusionMatrixDisplay.from_predictions(y_test, predicted)
+	disp.figure_.suptitle("Confusion Matrix")
+	plt.show()
+	return predicted
+
+
+
