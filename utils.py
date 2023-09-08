@@ -2,7 +2,12 @@
 from sklearn import datasets, metrics, svm
 from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
-#Utilities
+from itertools import product
+
+def generate_param_combinations(gamma_ranges, C_ranges):
+    # Create a combination of all parameters
+    all_param_combinations = [{'gamma': gamma, 'C': C} for gamma, C in product(gamma_ranges, C_ranges)]
+    return all_param_combinations
 
 def preprocess_data(data):
         # flatten the images
@@ -43,5 +48,21 @@ def predict_and_eval(model, X_test, y_test):
 	plt.show()
 	return predicted
 
+def tune_hparams(X_train, y_train, X_dev, y_dev, list_of_all_param_combinations):
+    best_accuracy = 0
+    best_hparams = None
+    best_model = None
 
+    for params in list_of_all_param_combinations:
+        clf = svm.SVC
+        model = clf(**params)
+        model.fit(X_train, y_train)
 
+        accuracy_dev = model.score(X_dev, y_dev)
+
+        if accuracy_dev > best_accuracy:
+            best_accuracy = accuracy_dev
+            best_hparams = params
+            best_model = model
+
+    return best_hparams, best_model, best_accuracy
