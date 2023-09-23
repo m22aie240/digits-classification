@@ -1,4 +1,6 @@
 # Standard scientific Python imports
+import numpy as np
+import cv2
 import matplotlib.pyplot as plt
 from utils import preprocess_data, split_data, train_model, read_digits, split_train_dev_test, predict_and_eval, tune_hparams,generate_param_combinations
 from sklearn import svm, metrics
@@ -46,3 +48,47 @@ n_samples = len(X)
 image_height, image_width = X[0].shape
 print(f"Total Samples in the Dataset: {n_samples}")
 print(f"Image Size - Height: {image_height}, Width: {image_width}")
+
+
+
+# ... (previous code)
+
+def resize_images(images, new_size):
+    resized_images = [cv2.resize(img, (new_size, new_size)) for img in images]
+    return np.array(resized_images)
+
+# Load the dataset
+X, y = read_digits()
+
+# Define different image sizes
+image_sizes = [4, 6, 8]
+
+# Define data split sizes
+train_size = 0.7
+dev_size = 0.1
+test_size = 0.2
+
+for size in image_sizes:
+    # Resize images
+    X_resized = resize_images(X, size)
+    
+    # Split data
+    X_train, X_dev, X_test, y_train, y_dev, y_test = split_train_dev_test(X_resized, y, test_size, dev_size)
+    
+    # Data preprocessing
+    X_train = preprocess_data(X_train)
+    X_dev = preprocess_data(X_dev)
+    X_test = preprocess_data(X_test)
+    
+    # Model training (you can use your existing code for this)
+    model_params = {'gamma': 0.001}
+    best_hparams, best_model, best_accuracy_dev = tune_hparams(X_train, y_train, X_dev, y_dev, all_param_combinations)
+    
+    # Model evaluation
+    best_accuracy_train = best_model.score(X_train, y_train)
+    best_accuracy_dev = best_model.score(X_dev, y_dev)
+    best_accuracy_test = best_model.score(X_test, y_test)
+    
+    # Print results
+    print(f"image size: {size}x{size} train_size: {train_size} dev_size: {dev_size} test_size: {test_size} train_acc: {best_accuracy_train:.2f} dev_acc: {best_accuracy_dev:.2f} test_acc: {best_accuracy_test:.2f}")
+
