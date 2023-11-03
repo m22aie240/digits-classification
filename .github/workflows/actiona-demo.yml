@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.9.0]
+        python-version: [3.8.1]
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
@@ -20,6 +20,11 @@ jobs:
       - run: echo "🍏 This job's status is ${{ job.status }}."
       - name: Install dep
         run:  pip3 install --no-cache-dir -r requirements.txt
-      - name: Run test cases
-        run:
-          python experiment.py
+      - name: Run Pytest
+        run: pytest
+      - name: Run experiment
+        run: python exp.py
+      - name: build docker image
+        run: docker build -t digits:v1 -f docker/Dockerfile .
+      - name: run tests from docker
+        run: docker run digits:v1
