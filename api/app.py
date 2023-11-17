@@ -38,5 +38,5 @@ def compare():
     predicted2 = model.predict([image2])
     return jsonify({"are_same_digit": int(predicted1[0]) == int(predicted2[0])})
 
-if _name_ == '_main_':
+if __name__ == '__main__':
     app.run(debug=True)
