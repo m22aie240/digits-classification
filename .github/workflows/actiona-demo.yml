@@ -21,10 +21,10 @@ jobs:
         continue-on-error: true # Continue to the next step even if the container fails to start
 
       - name: Wait for the container to start
-        run: sleep 5 # Adjust the sleep duration as needed
+        run: sleep 10 # Adjust the sleep duration as needed
 
       - name: Run tests from Docker
-        run: docker exec digits-container pytest /path/to/tests/test_app.py
+        run: docker exec digits-container pytest ./tests/test_app.py
         continue-on-error: true # Continue to the next step even if tests fail
 
       - name: Stop and remove Docker container
