@@ -93,3 +93,13 @@ print(metrics.confusion_matrix(binary_preds['svm'], binary_preds['tree'], labels
 # print(pd.DataFrame(results).groupby('model_type').describe().T)
                 
 
+
+# 7. Output the results
+print(f"test_size={test_size} dev_size={dev_size} train_size={1 - test_size - dev_size} train_acc={best_accuracy_dev} dev_acc={best_accuracy_dev} test_acc={best_accuracy_test}")
+print(f"Best Hyperparameters: {best_hparams}")
+
+# Add these lines to print the number of total samples and the size of the images
+n_samples = len(X)
+image_height, image_width = X[0].shape
+print(f"Total Samples in the Dataset: {n_samples}")
+print(f"Image Size - Height: {image_height}, Width: {image_width}")
