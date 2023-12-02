@@ -17,7 +17,7 @@ jobs:
 
       - name: Run pytest to run the flash based tests
         run:
-          pytest test_utils.py     
+          pytest test_util.py     
 
       - name: Run pytest to run the flash based tests
         run:
