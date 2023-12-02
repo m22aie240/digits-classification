@@ -29,13 +29,13 @@ jobs:
         run: pytest test_util.py
 
       - name: Run Flask app
-        run: python api/app.py &
+        run: python .api/app.py &
 
       - name: Wait for Flask app to start
         run: sleep 5s
 
       - name: Run pytest to run the Flask-based tests (for app)
-        run: pytest test/test_app.py
+        run: pytest .test/test_app.py
 
       - name: List files inside models folder after running Docker script
         run: ls -lh models
