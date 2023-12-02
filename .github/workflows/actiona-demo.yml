@@ -1,31 +1,41 @@
 name: GitHub Actions Demo
-on: [push]
+
+on:
+  push:
+    branches:
+      - main  # Adjust the branch name as needed
+
 jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         python-version: [3.8.1]
+
     steps:
-      
       - name: Check out repository code
         uses: actions/checkout@v2
       
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
       - name: Install dependencies
-        run:
-          pip3 install --no-cache-dir -r requirements.txt
+        run: |
+          pip install --no-cache-dir -r requirements.txt
 
-      - name: Run pytest to run the flash based tests
-        run:
-          pytest test_util.py     
+      - name: Run pytest to run the Flask-based tests
+        run: pytest test_util.py
 
-      - name: Run p flask app
-        run:
-	  python3 ./api/app.py
-      - name: Run pytest to run the flash based tests
-	run:
-          pytest ./test/test_app.py 
+      - name: Run Flask app
+        run: python api/app.py &
 
-      - name: List of files inside models folder after running docker script
-        run:
-          ls -lh models
+      - name: Wait for Flask app to start
+        run: sleep 5s
+
+      - name: Run pytest to run the Flask-based tests (for app)
+        run: pytest test/test_app.py
+
+      - name: List files inside models folder after running Docker script
+        run: ls -lh models
