@@ -21,7 +21,9 @@ jobs:
 
       - name: Run pytest to run the flash based tests
         run:
-          pytest ./api/test_app.py 
+	  python3 ./api/app.py
+	run:
+          pytest ./test/test_app.py 
 
       - name: List of files inside models folder after running docker script
         run:
