@@ -34,7 +34,7 @@ jobs:
         run: sleep 5s
 
       - name: Run pytest to run the Flask-based tests (for app)
-        run: pytest test/test_app.py
+        run: pytest tests/test_app.py
 
       - name: List files inside models folder after running Docker script
         run: ls -lh models
