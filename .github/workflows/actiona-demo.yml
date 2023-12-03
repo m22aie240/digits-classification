@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.8.1]
+        python-version: [3.9.1]
 
     steps:
       - name: Check out repository code
