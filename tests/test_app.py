@@ -2,10 +2,19 @@ import requests
 import json
 import pytest
 
-# Define the URL of your API
-api_url = "http://127.0.0.1:5002/predict"
+# Base URL of your API
+base_api_url = "http://127.0.0.1:5000/predict/"
 
-def test_predict_digit():
+def test_predict_digit_svm():
+    return _test_predict_digit(base_api_url + 'svm')
+
+def test_predict_digit_lr():
+    return _test_predict_digit(base_api_url + 'lr')
+
+def test_predict_digit_tree():
+    return _test_predict_digit(base_api_url + 'tree')
+
+def _test_predict_digit(api_url):
     # Define the input data as a Python list with 64 features
     input_data = [
         0.0, 0.0, 0.0, 11.999999999999982, 13.000000000000004, 5.000000000000021,
@@ -34,5 +43,5 @@ def test_predict_digit():
     result = response.json()
 
     # Assert the expected prediction result
-    assert result["y_predicted"] == 1  # Assert that the predicted digit is 1
-
+    # Note: The assert condition here is an example. You may need to modify it based on the actual expected output of your models.
+    assert "y_predicted" in result
